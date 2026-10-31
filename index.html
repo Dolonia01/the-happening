@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090b">
+  <meta name="description" content="A record of an event not yet explained.">
+  <title>THE HAPPENING</title>
+
+  <!--
+    QUICK CUSTOMIZATION:
+    1. Change the text in the HTML below.
+    2. Change colors in :root.
+    3. Set your countdown date in the SETTINGS section near the bottom.
+    4. Add, remove, or rewrite clues in the CLUES section near the bottom.
+    5. Add your own image URL in the --background-image setting if desired.
+  -->
+  <style>
+    :root {
+      /* DESIGN SETTINGS: change these values to restyle the whole site */
+      --background: #08090b;
+      --surface: #111318;
+      --text: #eeeDE8;
+      --muted: #92949c;
+      --accent: #ff4b43;
+      --border: rgba(238, 237, 232, .16);
+      --font-main: Arial, Helvetica, sans-serif;
+      --font-code: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --background-image: none; /* Example: url("your-image.jpg") */
+      --page-width: 1080px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--background); color: var(--text);
+      font-family: var(--font-main); min-height: 100vh; overflow-x: hidden;
+      background-image: var(--background-image);
+      background-size: cover; background-position: center; background-attachment: fixed;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: .055;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+    }
+    a { color: inherit; }
+    button { font: inherit; }
+    .container { width: min(var(--page-width), calc(100% - 40px)); margin: 0 auto; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; min-height:72px; border-bottom:1px solid var(--border); font:10px var(--font-code); letter-spacing:.12em; color:var(--muted); }
+    .brand { display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; }
+    .brand-mark { display:grid; place-items:center; width:26px; height:26px; border:1px solid var(--accent); color:var(--accent); }
+    .status { display:flex; align-items:center; gap:9px; }
+    .status-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 12px var(--accent); }
+    .hero { min-height:690px; min-height:calc(100svh - 72px); display:flex; flex-direction:column; justify-content:center; padding:78px 0 90px; position:relative; }
+    .eyebrow,.label { font:10px var(--font-code); letter-spacing:.18em; text-transform:uppercase; color:var(--accent); }
+    .eyebrow::before { content:""; display:inline-block; width:28px; height:1px; background:var(--accent); vertical-align:middle; margin-right:12px; }
+    h1 { font-size:clamp(56px, 11vw, 132px); line-height:.84; letter-spacing:-.085em; margin:28px 0 26px; font-weight:800; }
+    .outline { color:transparent; -webkit-text-stroke:1px var(--text); }
+    .intro { max-width:490px; color:#b9bac0; font-size:clamp(16px,2vw,20px); line-height:1.65; margin:0; }
+    .intro strong { color:var(--text); font-weight:500; }
+    .hero-grid { display:grid; grid-template-columns:1fr minmax(280px,350px); gap:55px; align-items:end; margin-top:54px; }
+    .description { max-width:410px; color:var(--muted); font-size:13px; line-height:1.9; }
+    .countdown { padding:24px; border:1px solid var(--border); background:var(--surface); position:relative; }
+    .countdown::before { content:""; position:absolute; top:-1px; left:-1px; width:44px; height:2px; background:var(--accent); }
+    .countdown-heading,.countdown-footer { display:flex; justify-content:space-between; gap:12px; font:10px var(--font-code); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+    .countdown-heading span:last-child { color:var(--accent); }
+    .timer { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:26px 0 20px; text-align:center; }
+    .number { display:block; font:clamp(24px,3.8vw,38px) var(--font-code); letter-spacing:-.08em; }
+    .unit-label { color:var(--muted); font:9px var(--font-code); letter-spacing:.1em; }
+    .countdown-footer { padding-top:15px; border-top:1px solid var(--border); }
+    .countdown-footer strong { color:var(--text); font-weight:400; }
+    .scroll-hint { position:absolute; bottom:25px; left:0; font:9px var(--font-code); color:var(--muted); letter-spacing:.13em; }
+    .scroll-hint::before { content:""; display:inline-block; width:30px; height:1px; background:var(--accent); vertical-align:middle; margin-right:12px; }
+    section { padding:80px 0; border-top:1px solid var(--border); }
+    .section-heading { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:30px; }
+    h2 { margin:12px 0 0; font-size:clamp(30px,5vw,52px); letter-spacing:-.06em; }
+    .section-number { font:10px var(--font-code); color:var(--muted); }
+    .clue-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .clue { text-align:left; min-height:185px; padding:22px; background:var(--surface); color:var(--text); border:1px solid var(--border); cursor:pointer; position:relative; transition:transform .2s,border-color .2s; }
+    .clue:hover,.clue:focus-visible { transform:translateY(-3px); border-color:var(--accent); outline:none; }
+    .clue::after { content:"↗"; position:absolute; top:18px; right:18px; color:var(--muted); }
+    .clue h3 { font:15px var(--font-code); margin:27px 0 10px; }
+    .clue p { font-size:12px; line-height:1.7; color:var(--muted); margin:0; }
+    .log { border:1px solid var(--border); padding:0 22px; }
+    .log-entry { display:grid; grid-template-columns:100px 1fr auto; gap:14px; align-items:center; padding:19px 0; border-bottom:1px solid var(--border); font:11px var(--font-code); }
+    .log-entry:last-child { border-bottom:0; }
+    .log-date { color:var(--muted); }
+    .log-state { font-size:9px; color:var(--accent); letter-spacing:.1em; }
+    .statement { max-width:850px; font-size:clamp(24px,4.5vw,47px); line-height:1.25; letter-spacing:-.05em; margin:0; }
+    .statement span { color:var(--accent); }
+    .supporting-text { max-width:500px; margin-top:22px; color:var(--muted); font:11px/1.9 var(--font-code); }
+    .terminal { max-width:680px; margin-top:30px; padding:20px; border:1px solid var(--border); background:#050607; color:#a9abb0; font:11px/2 var(--font-code); }
+    .terminal strong { color:var(--accent); font-weight:400; }
+    .footer { display:flex; justify-content:space-between; gap:18px; padding:25px 0 32px; border-top:1px solid var(--border); color:var(--muted); font:9px var(--font-code); letter-spacing:.08em; }
+    .footer button { background:none; border:0; color:inherit; cursor:pointer; font:inherit; }
+    .footer button:hover { color:var(--accent); }
+    .modal-backdrop { display:none; place-items:center; position:fixed; inset:0; z-index:20; padding:20px; background:rgba(0,0,0,.8); backdrop-filter:blur(8px); }
+    .modal-backdrop.open { display:grid; }
+    .modal { width:min(500px,100%); background:var(--background); border:1px solid var(--accent); padding:28px; }
+    .modal-top { display:flex; justify-content:space-between; color:var(--accent); font:10px var(--font-code); letter-spacing:.12em; }
+    .modal-close { border:0; background:none; color:var(--muted); cursor:pointer; font-size:20px; }
+    .modal h2 { margin:30px 0 12px; font-size:30px; }
+    .modal p { color:var(--muted); line-height:1.8; font-size:14px; }
+    @media(max-width:720px) {
+      .hero { min-height:auto; padding:65px 0 95px; }
+      .hero-grid { grid-template-columns:1fr; gap:25px; margin-top:35px; }
+      .countdown { max-width:430px; width:100%; }
+      .clue-grid { grid-template-columns:1fr; }
+      .clue { min-height:145px; }
+      .section-heading { align-items:start; flex-direction:column; }
+      section { padding:60px 0; }
+      .log-entry { grid-template-columns:70px 1fr; gap:10px; }
+      .log-state { grid-column:2; }
+      .footer { flex-direction:column; }
+      .topbar { min-height:62px; }
+    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; } }
+  </style>
+</head>
+<body>
+  <header class="container topbar">
+    <a class="brand" href="#top"><span class="brand-mark" id="brandMark">∴</span><span id="brandName">THE HAPPENING / ARCHIVE 00</span></a>
+    <div class="status"><span class="status-dot"></span><span id="statusText">EVENT UNCLASSIFIED</span></div>
+  </header>
+
+  <main id="top">
+    <div class="container hero">
+      <div class="eyebrow" id="eyebrow">An event in progress / 001</div>
+      <h1 id="mainTitle">THE<br><span class="outline">HAPPENING</span><span style="color:var(--accent)">.</span></h1>
+      <p class="intro" id="introText">Something was set in motion.<br><strong>The reason remains unknown.</strong></p>
+
+      <div class="hero-grid">
+        <div>
+          <div class="label">Current observation</div>
+          <p class="description" id="descriptionText">The countdown was only the first signal. Records are incomplete. Some details have been left where they can be found.</p>
+          <p class="label" style="margin-top:24px">[Your message / tagline goes here]</p>
+        </div>
+        <div class="countdown">
+          <div class="countdown-heading"><span id="countdownTitle">Next recorded event</span><span id="countdownStatus">Counting</span></div>
+          <div class="timer" aria-label="Countdown">
+            <div><span class="number" id="days">00</span><span class="unit-label">DAYS</span></div>
+            <div><span class="number" id="hours">00</span><span class="unit-label">HOURS</span></div>
+            <div><span class="number" id="minutes">00</span><span class="unit-label">MINUTES</span></div>
+            <div><span class="number" id="seconds">00</span><span class="unit-label">SECONDS</span></div>
+          </div>
+          <div class="countdown-footer"><span>LOCAL TIME</span><strong id="targetLabel">SET YOUR DATE</strong></div>
+        </div>
+      </div>
+      <div class="scroll-hint">SCROLL TO EXPLORE</div>
+    </div>
+
+    <section id="clues">
+      <div class="container">
+        <div class="section-heading"><div><div class="label">01 / Evidence locker</div><h2 id="clueHeading">Loose ends.</h2></div><div class="section-number" id="clueCount">03 ITEMS RECOVERED</div></div>
+        <div class="clue-grid" id="clueGrid">
+          <!-- Clue cards are generated from the CLUES list in the script below. -->
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <div class="container">
+        <div class="section-heading"><div><div class="label">02 / Incident log</div><h2 id="timelineHeading">What we know.</h2></div><div class="section-number">TIMELINE / INCOMPLETE</div></div>
+        <div class="log" id="timelineList">
+          <!-- Timeline entries are generated from the TIMELINE list below. -->
+        </div>
+      </div>
+    </section>
+
+    <section id="message">
+      <div class="container">
+        <div class="label">03 / Unofficial theory</div>
+        <p class="statement" id="bigStatement">Maybe the question was never <span>“what happens?”</span><br>Maybe it was <span>“what do you notice?”</span></p>
+        <p class="supporting-text" id="supportingText">This is not an explanation. It is a direction to look in. The archive may contain errors. The archive may also be the error.</p>
+        <div class="terminal" id="terminal">
+          <div><strong>archive@local:~$</strong> inspect --anomalies</div>
+          <div>scanning visible records... complete</div>
+          <div>scanning hidden records... <strong>incomplete</strong></div>
+          <div><strong>NOTE:</strong> replace this box with a clue, a poem, a code, or delete it.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <span id="footerLeft">TH / ARCHIVE 00 · EST. BEFORE THE EXPLANATION</span>
+    <span id="footerRight">NO CONCLUSION ON FILE</span>
+    <button id="metadataButton" type="button">[ METADATA ]</button>
+  </footer>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-top"><span id="modalCode">FRAGMENT / 001</span><button class="modal-close" id="modalClose" aria-label="Close">×</button></div>
+      <h2 id="modalTitle">A fragment.</h2>
+      <p id="modalBody">Put your hidden clue here.</p>
+    </div>
+  </div>
+
+  <script>
+    // ================================================================
+    // SETTINGS: EDIT THESE FIRST
+    // ================================================================
+
+    // Use your local time with a timezone offset.
+    // Examples:
+    // New York in daylight saving time: "2026-11-01T19:30:00-04:00"
+    // New York in standard time:        "2026-12-01T19:30:00-05:00"
+    // If you don't want a countdown yet, set COUNTDOWN_ENABLED to false.
+    const COUNTDOWN_ENABLED = true;
+    const COUNTDOWN_DATE = "2026-12-01T19:30:00-05:00";
+    const COUNTDOWN_LABEL = "Next recorded event";
+
+    // Change the words displayed in the browser tab and site header.
+    document.title = "THE HAPPENING";
+    // ================================================================
+    // CLUES: ADD, REMOVE, OR REWRITE AS MANY AS YOU WANT
+    // Each clue makes one clickable card. Use plain text for safety.
+    // ================================================================
+    const CLUES = [
+      {
+        label: "Record 001 / Partial",
+        title: "THE FIRST MARK",
+        teaser: "A date with no explanation. [OPEN FRAGMENT]",
+        secretTitle: "The first mark.",
+        secretText: "Write your own clue here. It can be a riddle, a date, a strange observation, or a clue that does not yet have an answer."
+      },
+      {
+        label: "Record 002 / Unverified",
+        title: "THE OBSERVER",
+        teaser: "Someone noticed before anyone was looking.",
+        secretTitle: "The observer.",
+        secretText: "Replace this with your second clue. You can hint at time, memory, a person, a place, an object, or an idea."
+      },
+      {
+        label: "Record 003 / Corrupted",
+        title: "THE SIGNAL",
+        teaser: "It repeats in the places nobody checks.",
+        secretTitle: "The signal.",
+        secretText: "Your third clue goes here. Keep it vague until you know what The Happening is going to become."
+      }
+    ];
+
+    // ================================================================
+    // TIMELINE: EDIT OR ADD EVENTS
+    // ================================================================
+    const TIMELINE = [
+      { date: "− 06 MONTHS", text: "A countdown is created.", state: "CONFIRMED" },
+      { date: "T − 00:00", text: "The original timer expires.", state: "CONFIRMED" },
+      { date: "NOW", text: "A new record becomes accessible.", state: "IN PROGRESS" },
+      { date: "UNKNOWN", text: "The purpose of the event.", state: "REDACTED" }
+    ];
+
+    // ================================================================
+    // RENDERING: YOU CAN LEAVE THIS SECTION ALONE
+    // ================================================================
+    const byId = id => document.getElementById(id);
+    const pad = value => String(value).padStart(2, "0");
+    const clueGrid = byId("clueGrid");
+
+    function openClue(code, title, body) {
+      byId("modalCode").textContent = code;
+      byId("modalTitle").textContent = title;
+      byId("modalBody").textContent = body;
+      byId("modalBackdrop").classList.add("open");
+    }
+
+    function renderClues() {
+      clueGrid.innerHTML = "";
+      CLUES.forEach((clue, index) => {
+        const button = document.createElement("button");
+        button.className = "clue";
+        button.type = "button";
+        const label = document.createElement("div");
+        label.className = "label";
+        label.textContent = clue.label || `Record ${pad(index + 1)}`;
+        const title = document.createElement("h3");
+        title.textContent = clue.title || "UNTITLED RECORD";
+        const teaser = document.createElement("p");
+        teaser.textContent = clue.teaser || "No summary available.";
+        button.append(label, title, teaser);
+        button.addEventListener("click", () => openClue(`FRAGMENT / ${pad(index + 1)}`, clue.secretTitle || clue.title, clue.secretText || "This record is empty.");
+        clueGrid.appendChild(button);
+      });
+      byId("clueCount").textContent = `${pad(CLUES.length)} ITEMS RECOVERED`;
+    }
+
+    function renderTimeline() {
+      const list = byId("timelineList");
+      list.innerHTML = "";
+      TIMELINE.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "log-entry";
+        [item.date, item.text, item.state].forEach((value, index) => {
+          const cell = document.createElement("span");
+          cell.textContent = value;
+          if (index === 0) cell.className = "log-date";
+          if (index === 2) cell.className = "log-state";
+          row.appendChild(cell);
+        });
+        list.appendChild(row);
+      });
+    }
+
+    function setupCountdown() {
+      if (!COUNTDOWN_ENABLED) {
+        byId("countdownStatus").textContent = "UNSET";
+        byId("targetLabel").textContent = "DATE NOT SET";
+        ["days", "hours", "minutes", "seconds"].forEach(id => byId(id).textContent = "--");
+        return;
+      }
+      const target = new Date(COUNTDOWN_DATE);
+      if (Number.isNaN(target.getTime())) {
+        byId("countdownStatus").textContent = "INVALID DATE";
+        byId("targetLabel").textContent = "CHECK SETTINGS";
+        return;
+      }
+      byId("countdownTitle").textContent = COUNTDOWN_LABEL;
+      byId("targetLabel").textContent = target.toLocaleString(undefined, {
+        month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false
+      }).toUpperCase();
+
+      function tick() {
+        const diff = Math.max(0, target.getTime() - Date.now());
+        byId("days").textContent = pad(Math.floor(diff / 86400000));
+        byId("hours").textContent = pad(Math.floor(diff % 86400000 / 3600000));
+        byId("minutes").textContent = pad(Math.floor(diff % 3600000 / 60000));
+        byId("seconds").textContent = pad(Math.floor(diff % 60000 / 1000));
+        if (diff <= 0) {
+          byId("countdownStatus").textContent = "EVENT WINDOW";
+          byId("targetLabel").textContent = "NOW";
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    renderClues();
+    renderTimeline();
+    setupCountdown();
+
+    byId("modalClose").addEventListener("click", () => byId("modalBackdrop").classList.remove("open"));
+    byId("modalBackdrop").addEventListener("click", event => {
+      if (event.target === byId("modalBackdrop")) byId("modalBackdrop").classList.remove("open");
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") byId("modalBackdrop").classList.remove("open");
+    });
+    byId("metadataButton").addEventListener("click", () => openClue(
+      "SITE METADATA", "The archive is unfinished.", "This site is yours to edit. Add your own clues, change the countdown, replace the text, and make the mystery mean whatever you decide."
+    ));
+  </script>
+</body>
+</html>
